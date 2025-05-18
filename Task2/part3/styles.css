@@ -1,0 +1,137 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1.5rem;
+  background: #f5f7fa;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+nav {
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #34495e;
+  margin-right: 1.25rem;
+  transition: color 0.3s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+nav a:hover {
+  color: #3498db;
+  background-color: #eaf4fc;
+}
+
+nav a.active {
+  font-weight: 600;
+  color: #2980b9;
+  background-color: #d6e9fb;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  font-size: 1.1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+button {
+  padding: 0.6rem 1.25rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background-color: #3498db;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 7px rgba(52, 152, 219, 0.4);
+}
+
+button:hover {
+  background-color: #2980b9;
+  box-shadow: 0 5px 12px rgba(41, 128, 185, 0.6);
+}
+
+ul#taskList {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul#taskList li {
+  background: #fdfefe;
+  border: 1.5px solid #d6dbdf;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-size: 1.05rem;
+  transition: background-color 0.3s ease;
+}
+
+ul#taskList li:hover {
+  background-color: #e8f0fe;
+}
+
+ul#taskList li button.delete-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+ul#taskList li button.delete-btn:hover {
+  background: #c0392b;
+  box-shadow: 0 3px 10px rgba(192, 57, 43, 0.7);
+}
+
+ul#taskList li span {
+  /* For date and task text spans */
+  display: inline-block;
+}
+
+ul#taskList li span:first-child {
+  /* Date span styling */
+  min-width: 90px;
+  font-size: 0.95rem;
+  color: #2980b9;
+}
+
+ul#taskList li span:last-child {
+  /* Task text styling */
+  flex-grow: 1;
+}

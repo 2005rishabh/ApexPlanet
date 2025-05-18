@@ -1,0 +1,135 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --nav-bg: #f0f0f0;
+  --accent-color: #6200ee;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --nav-bg: #1f1f1f;
+  --accent-color: #bb86fc;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+nav {
+  background-color: var(--nav-bg);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+nav .nav-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+nav .logo {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: var(--text-color);
+  transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.toggle-theme {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.toggle-theme:hover {
+  background-color: var(--accent-color);
+  color: var(--nav-bg);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.main {
+  background-color: #e0e0e0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.sidebar {
+  background-color: #d0d0d0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Fix bullet points inside container */
+.main ul,
+.sidebar ul {
+  padding-left: 1.2rem;
+  margin-left: 0;
+  list-style-position: inside;
+}
+
+[data-theme="dark"] .main {
+  background-color: #1e1e1e;
+}
+
+[data-theme="dark"] .sidebar {
+  background-color: #292929;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  nav .nav-group,
+  nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
