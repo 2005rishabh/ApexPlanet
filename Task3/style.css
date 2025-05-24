@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 40px;
+  margin: 0;
+  background-color: #f0f4f8;
+}
+
+h1 {
+  color: #222;
+  margin-bottom: 40px;
+}
+
+.section {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 400px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.section:hover {
+  background-color: #e0f7fa;
+  transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .section {
+    max-width: 90%;
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
+}
