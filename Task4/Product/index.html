@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Filter & Sort</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🛍 Product Catalog</h1>
+
+        <!-- Filter & Sort Controls -->
+        <div class="controls">
+            <select id="category-filter">
+                <option value="all">All Categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="books">Books</option>
+            </select>
+
+            <select id="price-filter">
+                <option value="all">All Prices</option>
+                <option value="low">Below $50</option>
+                <option value="medium">$50 - $100</option>
+                <option value="high">Above $100</option>
+            </select>
+
+            <select id="sort">
+                <option value="default">Sort By</option>
+                <option value="price-asc">Price (Low to High)</option>
+                <option value="price-desc">Price (High to Low)</option>
+                <option value="rating">Rating (High to Low)</option>
+            </select>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="product-grid">
+            <!-- Products will be inserted here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
