@@ -71,3 +71,24 @@ function updateTasks() {
     });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
+document.getElementById('clear-tasks').addEventListener('click', () => {
+  if (confirm("Clear all tasks?")) {
+    localStorage.removeItem('tasks');
+    taskList.innerHTML = '';
+  }
+});
+
+document.getElementById('toggle-theme').addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+});
+
+// Persist theme
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+  }
+  loadTasks();
+});
