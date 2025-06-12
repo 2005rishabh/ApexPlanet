@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Browser 🎬</title>
+  <link rel="stylesheet" href="style/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🎬 Movie Browser</h1>
+    <input id="searchInput" type="text" placeholder="Search for a movie..." />
+  </header>
+
+  <main>
+    <section id="movieContainer" class="movie-grid"></section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div id="modalContent" class="modal-content"></div>
+  </div>
+
+  <script type="module" src="script/app.js"></script>
+</body>
+</html>
