@@ -2,17 +2,19 @@ import { searchMovies, getMovieDetails } from './api.js';
 
 const searchInput = document.getElementById('searchInput');
 const movieContainer = document.getElementById('movieContainer');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalContent = document.getElementById('modalContent');
 
-// Fetch and display default movies on page load
+// Load default movies
 window.addEventListener('DOMContentLoaded', loadDefaultMovies);
 
 async function loadDefaultMovies() {
-  const defaultQuery = 'avengers'; // You can change this to any default keyword
+  const defaultQuery = 'avengers';
   const movies = await searchMovies(defaultQuery);
   displayMovies(movies);
 }
 
-// Search functionality
+// Search input
 searchInput.addEventListener('input', async (e) => {
   const query = e.target.value.trim();
   if (query.length > 2) {
@@ -23,33 +25,45 @@ searchInput.addEventListener('input', async (e) => {
       movieContainer.innerHTML = '<p>No movies found</p>';
     }
   } else {
-    loadDefaultMovies(); // Fallback to default if input cleared
+    loadDefaultMovies();
   }
 });
 
-// Display search results or default movies
+// Display movies
 function displayMovies(movies) {
   movieContainer.innerHTML = '';
   movies.forEach((movie) => {
     const card = document.createElement('div');
     card.classList.add('movie-card');
+
+    const isFavorite = checkIfFavorite(movie.imdbID);
+
     card.innerHTML = `
       <img src="${movie.Poster !== "N/A" ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.Title}" />
       <h3>${movie.Title}</h3>
       <p>${movie.Year}</p>
+      <button class="fav-btn" data-id="${movie.imdbID}">
+        ${isFavorite ? '💖 Remove' : '🤍 Favorite'}
+      </button>
     `;
+
     card.addEventListener('click', () => showDetails(movie.imdbID));
     movieContainer.appendChild(card);
+
+    // Handle favorite button
+    const favBtn = card.querySelector('.fav-btn');
+    favBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent modal open
+      toggleFavorite(movie.imdbID);
+      displayMovies(movies); // re-render
+    });
   });
 }
 
-// Show movie details in modal
+// Show modal
 async function showDetails(imdbID) {
   const movie = await getMovieDetails(imdbID);
   if (!movie) return;
-
-  const modalOverlay = document.getElementById('modalOverlay');
-  const modalContent = document.getElementById('modalContent');
 
   modalContent.innerHTML = `
     <span class="close-btn" id="closeModal">&times;</span>
@@ -73,3 +87,44 @@ async function showDetails(imdbID) {
     }
   });
 }
+
+// Favorite helpers
+function getFavorites() {
+  return JSON.parse(localStorage.getItem('favorites')) || [];
+}
+
+function saveFavorites(favs) {
+  localStorage.setItem('favorites', JSON.stringify(favs));
+}
+
+function checkIfFavorite(id) {
+  const favs = getFavorites();
+  return favs.includes(id);
+}
+
+function toggleFavorite(id) {
+  let favs = getFavorites();
+  if (favs.includes(id)) {
+    favs = favs.filter(fav => fav !== id);
+  } else {
+    favs.push(id);
+  }
+  saveFavorites(favs);
+}
+
+// Show Favorites
+document.getElementById('showFavoritesBtn').addEventListener('click', async () => {
+  const favIDs = getFavorites();
+  const favMovies = [];
+
+  for (const id of favIDs) {
+    const details = await getMovieDetails(id);
+    if (details) favMovies.push(details);
+  }
+
+  if (favMovies.length > 0) {
+    displayMovies(favMovies);
+  } else {
+    movieContainer.innerHTML = '<p>No favorites yet!</p>';
+  }
+});

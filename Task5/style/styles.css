@@ -17,6 +17,11 @@ header {
   text-align: center;
   margin-bottom: 30px;
 }
+.movie-heading{
+  a {
+    text-decoration: none;
+  }
+}
 h1 {
   font-size: 2.5rem;
   color: #4dabf7;
@@ -120,4 +125,71 @@ input#searchInput:focus {
     width: 95%;
     font-size: 0.9rem;
   }
+}
+
+
+/* Existing styles... */
+
+/* New: Favorite Button */
+.fav-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid #4dabf7;
+  color: #4dabf7;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+.fav-btn:hover {
+  background-color: #4dabf7;
+  color: #121212;
+}
+
+/* New: Show Favorites Button */
+#showFavoritesBtn {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #4dabf7;
+  color: #121212;
+  cursor: pointer;
+  font-size: 1rem;
+}
+#showFavoritesBtn:hover {
+  background-color: #339af0;
+}
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+/* Movie Card Styles */
+.movie-card {
+  background-color: #1e1e1e;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  max-width: 250px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
 }
