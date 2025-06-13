@@ -4,32 +4,78 @@ const searchInput = document.getElementById('searchInput');
 const movieContainer = document.getElementById('movieContainer');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalContent = document.getElementById('modalContent');
+const showFavoritesBtn = document.getElementById('showFavoritesBtn');
 
-// Load default movies
+let currentPage = 1;
+let currentQuery = 'avengers';
+let isFetching = false;
+let allMovies = [];
+let isFavoritesView = false;
+
+// Load default movies on page load
 window.addEventListener('DOMContentLoaded', loadDefaultMovies);
 
-async function loadDefaultMovies() {
-  const defaultQuery = 'avengers';
-  const movies = await searchMovies(defaultQuery);
-  displayMovies(movies);
-}
-
-// Search input
+// Handle search input
 searchInput.addEventListener('input', async (e) => {
   const query = e.target.value.trim();
+  isFavoritesView = false;
+
   if (query.length > 2) {
-    const movies = await searchMovies(query);
-    if (movies.length > 0) {
-      displayMovies(movies);
-    } else {
-      movieContainer.innerHTML = '<p>No movies found</p>';
-    }
+    currentQuery = query;
+    currentPage = 1;
+    allMovies = [];
+    await fetchAndAppendMovies();
   } else {
     loadDefaultMovies();
   }
 });
 
-// Display movies
+// Handle favorites button
+showFavoritesBtn.addEventListener('click', async () => {
+  const favIDs = getFavorites();
+  const favMovies = [];
+
+  for (const id of favIDs) {
+    const movie = await getMovieDetails(id);
+    if (movie) favMovies.push(movie);
+  }
+
+  isFavoritesView = true;
+  allMovies = favMovies;
+  displayMovies(favMovies);
+});
+
+// Infinite scroll listener
+window.addEventListener('scroll', () => {
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+  if (nearBottom && !isFavoritesView) {
+    fetchAndAppendMovies();
+  }
+});
+
+// Load default "avengers" movies
+async function loadDefaultMovies() {
+  currentQuery = 'avengers';
+  currentPage = 1;
+  allMovies = [];
+  isFavoritesView = false;
+  await fetchAndAppendMovies();
+}
+
+// Fetch and append movie results
+async function fetchAndAppendMovies() {
+  if (isFetching) return;
+  isFetching = true;
+  const newMovies = await searchMovies(currentQuery, currentPage);
+  if (newMovies.length > 0) {
+    allMovies = [...allMovies, ...newMovies];
+    displayMovies(allMovies);
+    currentPage++;
+  }
+  isFetching = false;
+}
+
+// Display movie cards
 function displayMovies(movies) {
   movieContainer.innerHTML = '';
   movies.forEach((movie) => {
@@ -37,9 +83,10 @@ function displayMovies(movies) {
     card.classList.add('movie-card');
 
     const isFavorite = checkIfFavorite(movie.imdbID);
+    const poster = movie.Poster !== "N/A" ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Image';
 
     card.innerHTML = `
-      <img src="${movie.Poster !== "N/A" ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.Title}" />
+      <img src="${poster}" alt="${movie.Title}" loading="lazy" />
       <h3>${movie.Title}</h3>
       <p>${movie.Year}</p>
       <button class="fav-btn" data-id="${movie.imdbID}">
@@ -47,20 +94,25 @@ function displayMovies(movies) {
       </button>
     `;
 
+    // Card click opens modal
     card.addEventListener('click', () => showDetails(movie.imdbID));
-    movieContainer.appendChild(card);
 
-    // Handle favorite button
+    // Favorite button click
     const favBtn = card.querySelector('.fav-btn');
     favBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // prevent modal open
+      e.stopPropagation(); // prevent modal
       toggleFavorite(movie.imdbID);
-      displayMovies(movies); // re-render
+      if (isFavoritesView) {
+        allMovies = allMovies.filter(m => m.imdbID !== movie.imdbID);
+      }
+      displayMovies(allMovies);
     });
+
+    movieContainer.appendChild(card);
   });
 }
 
-// Show modal
+// Show movie modal
 async function showDetails(imdbID) {
   const movie = await getMovieDetails(imdbID);
   if (!movie) return;
@@ -88,7 +140,7 @@ async function showDetails(imdbID) {
   });
 }
 
-// Favorite helpers
+// Favorite management
 function getFavorites() {
   return JSON.parse(localStorage.getItem('favorites')) || [];
 }
@@ -111,20 +163,3 @@ function toggleFavorite(id) {
   }
   saveFavorites(favs);
 }
-
-// Show Favorites
-document.getElementById('showFavoritesBtn').addEventListener('click', async () => {
-  const favIDs = getFavorites();
-  const favMovies = [];
-
-  for (const id of favIDs) {
-    const details = await getMovieDetails(id);
-    if (details) favMovies.push(details);
-  }
-
-  if (favMovies.length > 0) {
-    displayMovies(favMovies);
-  } else {
-    movieContainer.innerHTML = '<p>No favorites yet!</p>';
-  }
-});
